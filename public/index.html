@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GENLAB Billing</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div>
+        <h1>GENLAB Billing</h1>
+        <p>Create invoices, track payments, download PDFs, and email customers.</p>
+      </div>
+      <button id="refresh-invoices">Refresh Invoices</button>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <h2>Create Invoice</h2>
+        <form id="invoice-form">
+          <div class="grid two-col">
+            <input name="name" placeholder="Customer Name" required />
+            <input name="contactNumber" placeholder="Contact Number" required />
+            <input name="email" type="email" placeholder="Email Address" required />
+            <input name="address" placeholder="Customer Address" required />
+          </div>
+
+          <div class="section-head">
+            <h3>Items / Services</h3>
+            <button type="button" id="add-item">Add Item</button>
+          </div>
+
+          <div id="items"></div>
+
+          <div class="actions">
+            <button type="submit">Generate Invoice</button>
+          </div>
+        </form>
+        <p id="form-message" class="message"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Latest Invoice</h2>
+        <div id="invoice-preview" class="preview empty">No invoice created yet.</div>
+      </section>
+
+      <section class="panel full-width">
+        <h2>Saved Invoices</h2>
+        <div id="invoice-list" class="invoice-list"></div>
+      </section>
+    </main>
+
+    <template id="item-template">
+      <div class="item-row">
+        <input name="itemName" placeholder="Item / Service" required />
+        <input name="quantity" type="number" min="1" step="1" value="1" required />
+        <input name="unitPrice" type="number" min="0" step="0.01" placeholder="Unit Price" required />
+        <input name="taxPercent" type="number" min="0" step="0.01" placeholder="Tax %" value="0" />
+        <button type="button" class="remove-item">Remove</button>
+      </div>
+    </template>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
