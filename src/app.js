@@ -21,7 +21,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api", (req, res, next) => {
   if (!isDbReady()) {
     return res.status(503).json({
-      message: "Database unavailable. Verify MongoDB is running and MONGODB_URI is correct."
+      message: "Database unavailable. Verify MongoDB is running, confirm that MONGODB_URI is correct, and restart the server."
     });
   }
 
