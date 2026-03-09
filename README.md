@@ -16,12 +16,23 @@ Minimal full-stack billing system built with HTML/CSS/JavaScript, Node.js/Expres
 1. Install dependencies:
    - `npm install`
 2. Copy env file:
-   - `copy .env.example .env`
+   - PowerShell: `Copy-Item .env.example .env`
 3. Start MongoDB locally or update `MONGODB_URI`
 4. Run the app:
-   - `npm run dev`
+   - `npm start`
 5. Open:
    - `http://localhost:5000`
+
+## Troubleshooting
+
+- If you see `Operation customers.findOneAndUpdate() buffering timed out after 10000ms`:
+  - the frontend request is usually fine; MongoDB is unavailable to the backend process handling the request
+  - make sure MongoDB is running
+  - verify `MONGODB_URI` in `.env`
+  - restart the server after fixing MongoDB
+- If startup fails with `EADDRINUSE` on port `5000`:
+  - find the existing process: `netstat -ano | findstr :5000`
+  - stop it: `taskkill /PID <PID> /F`
 
 ## Structure
 

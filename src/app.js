@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
+const { isDbReady } = require("./config/db");
 const customerRoutes = require("./routes/customerRoutes");
 const invoiceRoutes = require("./routes/invoiceRoutes");
 
@@ -15,6 +16,16 @@ app.use(express.static(publicDir));
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", service: "GENLAB-BILLING" });
+});
+
+app.use("/api", (req, res, next) => {
+  if (!isDbReady()) {
+    return res.status(503).json({
+      message: "Database unavailable. Verify MongoDB is running and MONGODB_URI is correct."
+    });
+  }
+
+  next();
 });
 
 app.use("/api/customers", customerRoutes);
