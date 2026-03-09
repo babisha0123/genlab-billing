@@ -119,27 +119,24 @@ invoiceForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   formMessage.textContent = "Creating invoice...";
 
-  try {
-    const response = await fetch("/api/invoices", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(getInvoicePayload())
-    });
+  const response = await fetch("/api/invoices", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(getInvoicePayload())
+  });
 
-    const result = await response.json();
-    if (!response.ok) {
-      throw new Error(result.message || "Invoice creation failed.");
-    }
-
-    formMessage.textContent = `Invoice ${result.invoiceNumber} created successfully.`;
-    renderPreview(result);
-    invoiceForm.reset();
-    itemsContainer.innerHTML = "";
-    addItemRow();
-    fetchInvoices();
-  } catch (error) {
-    formMessage.textContent = error.message;
+  const result = await response.json();
+  if (!response.ok) {
+    formMessage.textContent = result.message || "Invoice creation failed.";
+    return;
   }
+
+  formMessage.textContent = `Invoice ${result.invoiceNumber} created successfully.`;
+  renderPreview(result);
+  invoiceForm.reset();
+  itemsContainer.innerHTML = "";
+  addItemRow();
+  fetchInvoices();
 });
 
 document.getElementById("add-item").addEventListener("click", () => addItemRow());
