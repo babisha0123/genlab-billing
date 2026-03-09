@@ -34,7 +34,7 @@ function getMongoUri() {
     throw new Error("MONGODB_URI is required in production.");
   }
 
-  return "mongodb://127.0.0.1:27017/genlab-billing";
+  return "mongodb+srv://babisha:12345@cluster0.8ko59l6.mongodb.net/";
 }
 
 async function connectDb() {
