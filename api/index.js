@@ -14,11 +14,9 @@ module.exports = async (req, res) => {
 
     return handler(req, res);
   } catch (error) {
-    console.error("MongoDB connection failed:", error);
-
-    return res.status(503).json({
-      message:
-        "Database unavailable. Verify MongoDB is running and MONGODB_URI is correct."
+    console.error("Database connection failed:", error);
+    return res.status(500).json({
+      message: "Database connection failed"
     });
   }
 };
