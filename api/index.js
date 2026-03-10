@@ -1,14 +1,24 @@
+const serverless = require("serverless-http");
 const app = require("../src/app");
 const { connectDb } = require("../src/config/db");
+
+let handler;
 
 module.exports = async (req, res) => {
   try {
     await connectDb();
-    return app(req, res);
+
+    if (!handler) {
+      handler = serverless(app);
+    }
+
+    return handler(req, res);
   } catch (error) {
-    console.error("Failed to connect to MongoDB:", error.message);
+    console.error("MongoDB connection failed:", error);
+
     return res.status(503).json({
-      message: "Database unavailable. Verify MongoDB is running, confirm that MONGODB_URI is correct, and restart the server."
+      message:
+        "Database unavailable. Verify MongoDB is running and MONGODB_URI is correct."
     });
   }
 };
