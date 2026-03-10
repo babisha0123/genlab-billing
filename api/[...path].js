@@ -2,23 +2,26 @@ const serverless = require("serverless-http");
 const app = require("../src/app");
 const { connectDb } = require("../src/config/db");
 
-let handler;
+let cachedHandler;
+
+async function getHandler() {
+  await connectDb();
+
+  if (!cachedHandler) {
+    cachedHandler = serverless(app);
+  }
+
+  return cachedHandler;
+}
 
 module.exports = async (req, res) => {
   try {
-    await connectDb();
-
-    if (!handler) {
-      handler = serverless(app);
-    }
-
+    const handler = await getHandler();
     return handler(req, res);
-
   } catch (error) {
     console.error("Server error:", error);
 
-    return res.status(500).json({
-      message: "Internal server error"
-    });
+    res.statusCode = 500;
+    res.end(JSON.stringify({ message: "Internal Server Error" }));
   }
 };
