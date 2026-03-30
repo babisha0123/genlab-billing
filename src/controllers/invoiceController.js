@@ -120,11 +120,15 @@ async function emailInvoice(req, res, next) {
       filename: `${invoice.invoiceNumber}.pdf`
     });
 
+    console.log(result, 'result');
     res.json({
       message: result.simulated ? "Invoice email simulated successfully." : "Invoice email sent successfully.",
       simulated: result.simulated,
       invoiceNumber: invoice.invoiceNumber
     });
+
+    console.log(res, 'res');
+    
   } catch (error) {
     next(error);
   }
